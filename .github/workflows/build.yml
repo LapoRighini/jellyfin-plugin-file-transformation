@@ -1,0 +1,35 @@
+name: Build plugin
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore
+        run: dotnet restore src/Jellyfin.Plugin.FileTransformation.sln
+      - name: Build
+        run: dotnet build src/Jellyfin.Plugin.FileTransformation.sln --configuration Release --no-restore
+      - name: Package
+        shell: pwsh
+        run: |
+          $output = 'artifact'
+          New-Item -ItemType Directory -Force -Path $output | Out-Null
+          Copy-Item 'src/Jellyfin.Plugin.FileTransformation/bin/Release/net10.0/*' $output -Recurse
+          Compress-Archive -Path "$output/*" -DestinationPath 'FileTransformation.zip'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FileTransformation
+          path: FileTransformation.zip
+          if-no-files-found: error

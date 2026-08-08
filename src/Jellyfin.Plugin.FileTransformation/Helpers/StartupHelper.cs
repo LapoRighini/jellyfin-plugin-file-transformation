@@ -96,14 +96,13 @@ namespace Jellyfin.Plugin.FileTransformation.Helpers
 
                 mainApp.UseCors();
 
+                mainApp.UseRequestLocalization();
+
                 if (config.RequireHttps && serverApplicationHost.ListenWithHttps)
                 {
                     mainApp.UseHttpsRedirection();
                 }
 
-                // This must be injected before any path related middleware.
-                mainApp.UsePathTrim();
-                
                 if (appConfig.HostWebClient())
                 {
                     FileExtensionContentTypeProvider extensionProvider = new FileExtensionContentTypeProvider();
@@ -133,11 +132,6 @@ namespace Jellyfin.Plugin.FileTransformation.Helpers
                 mainApp.UseRouting();
                 mainApp.UseAuthorization();
 
-                // This was removed as part of 10.11 release, keeping here for backwards compatibility.
-                if (JellyfinVersionAttribute.GetVersion() == "10.10.7")
-                {
-                    mainApp.UseLanFiltering();
-                }
                 mainApp.UseIPBasedAccessValidation();
                 mainApp.UseWebSocketHandler();
                 mainApp.UseServerStartupMessage();

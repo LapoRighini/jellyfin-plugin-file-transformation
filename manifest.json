@@ -1,0 +1,12 @@
+[
+  {
+    "guid": "5e87cc92-571a-4d8d-8d98-d2d4147f9f90",
+    "name": "File Transformation",
+    "overview": "Non-destructive transformations for Jellyfin Web files.",
+    "description": "Allows compatible plugins to transform Jellyfin Web content without modifying the installed web client.",
+    "owner": "REPLACE_WITH_YOUR_GITHUB_USER",
+    "category": "General",
+    "imageUrl": "https://raw.githubusercontent.com/REPLACE_WITH_YOUR_GITHUB_USER/jellyfin-plugin-file-transformation/main/src/logo.png",
+    "versions": []
+  }
+]

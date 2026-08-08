@@ -1,0 +1,61 @@
+name: Publish plugin release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Build and package
+        shell: pwsh
+        run: |
+          dotnet restore src/Jellyfin.Plugin.FileTransformation.sln
+          dotnet build src/Jellyfin.Plugin.FileTransformation.sln --configuration Release --no-restore
+          $output = 'artifact'
+          New-Item -ItemType Directory -Force -Path $output | Out-Null
+          Copy-Item 'src/Jellyfin.Plugin.FileTransformation/bin/Release/net10.0/*' $output -Recurse
+          Compress-Archive -Path "$output/*" -DestinationPath 'FileTransformation.zip'
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: FileTransformation.zip
+          generate_release_notes: true
+      - name: Update repository manifest
+        shell: pwsh
+        env:
+          TAG: ${{ github.ref_name }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          $version = $env:TAG.TrimStart('v')
+          $checksum = (Get-FileHash FileTransformation.zip -Algorithm MD5).Hash
+          $now = (Get-Date).ToUniversalTime().ToString('o')
+          $entry = [ordered]@{
+            version = $version
+            changelog = "Jellyfin 12.0 RC4 compatibility release."
+            targetAbi = '12.0.0.0'
+            sourceUrl = "https://github.com/$env:REPOSITORY/releases/download/$env:TAG/FileTransformation.zip"
+            checksum = $checksum
+            timestamp = $now
+          }
+          $manifest = Get-Content manifest.json -Raw | ConvertFrom-Json -AsHashtable
+          $manifest[0].owner = $env:REPOSITORY.Split('/')[0]
+          $manifest[0].imageUrl = "https://raw.githubusercontent.com/$env:REPOSITORY/main/src/logo.png"
+          $manifest[0].versions = @($entry) + @($manifest[0].versions)
+          $manifest | ConvertTo-Json -Depth 10 | Set-Content manifest.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add manifest.json
+          git commit -m "chore: publish $version plugin manifest"
+          git push origin HEAD:main
