@@ -13,7 +13,7 @@
 
 This plugin is based on a Pull Request (https://github.com/jellyfin/jellyfin/pull/9095) by https://github.com/JPVenson. Most of the code here was written by him, though adapted to function in a plugin context rather than a native change.</Description>
         
-        <Version>3.0.0.0</Version>
+        <Version>3.0.0.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -39,6 +39,13 @@ This plugin is based on a Pull Request (https://github.com/jellyfin/jellyfin/pul
     <ItemGroup>
         <None Include="..\..\README.md" />
         <None Include="..\logo.png" CopyToOutputDirectory="Always" />
+    </ItemGroup>
+
+    <!-- The 10.x extension implementations are retained for history but must not
+         be compiled for Jellyfin 12, where the startup pipeline is defined inline. -->
+    <ItemGroup>
+        <Compile Remove="JellyfinVersionSpecific\**\*.cs" />
+        <None Include="JellyfinVersionSpecific\**\*.cs" />
     </ItemGroup>
     
 </Project>
