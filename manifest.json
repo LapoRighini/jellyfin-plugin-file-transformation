@@ -7,6 +7,15 @@
     "owner": "LapoRighini",
     "category": "General",
     "imageUrl": "https://raw.githubusercontent.com/LapoRighini/jellyfin-plugin-file-transformation/main/src/logo.png",
-    "versions": []
+    "versions": [
+      {
+        "version": "3.0.0.2",
+        "changelog": "Jellyfin 12.0 RC4 compatibility release.",
+        "targetAbi": "12.0.0.0",
+        "sourceUrl": "https://github.com/LapoRighini/jellyfin-plugin-file-transformation/releases/download/v3.0.0.2/FileTransformation.zip",
+        "checksum": "57D7DE6EA0EDFE86FD16D9EAA8093BDA",
+        "timestamp": "2026-08-08T12:08:50Z"
+      }
+    ]
   }
 ]

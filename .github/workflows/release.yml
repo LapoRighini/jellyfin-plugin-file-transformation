@@ -49,10 +49,11 @@ jobs:
             checksum = $checksum
             timestamp = $now
           }
-          $manifest = Get-Content manifest.json -Raw | ConvertFrom-Json -AsHashtable
-          $manifest[0].owner = $env:REPOSITORY.Split('/')[0]
-          $manifest[0].imageUrl = "https://raw.githubusercontent.com/$env:REPOSITORY/main/src/logo.png"
-          $manifest[0].versions = @($entry) + @($manifest[0].versions)
+          $manifest = @(Get-Content manifest.json -Raw | ConvertFrom-Json -AsHashtable)
+          $plugin = $manifest[0]
+          $plugin['owner'] = $env:REPOSITORY.Split('/')[0]
+          $plugin['imageUrl'] = "https://raw.githubusercontent.com/$env:REPOSITORY/main/src/logo.png"
+          $plugin['versions'] = @($entry) + @($plugin['versions'])
           $manifest | ConvertTo-Json -Depth 10 | Set-Content manifest.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
