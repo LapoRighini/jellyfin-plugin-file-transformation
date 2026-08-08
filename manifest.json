@@ -4,9 +4,9 @@
     "name": "File Transformation",
     "overview": "Non-destructive transformations for Jellyfin Web files.",
     "description": "Allows compatible plugins to transform Jellyfin Web content without modifying the installed web client.",
-    "owner": "REPLACE_WITH_YOUR_GITHUB_USER",
+    "owner": "LapoRighini",
     "category": "General",
-    "imageUrl": "https://raw.githubusercontent.com/REPLACE_WITH_YOUR_GITHUB_USER/jellyfin-plugin-file-transformation/main/src/logo.png",
+    "imageUrl": "https://raw.githubusercontent.com/LapoRighini/jellyfin-plugin-file-transformation/main/src/logo.png",
     "versions": []
   }
 ]

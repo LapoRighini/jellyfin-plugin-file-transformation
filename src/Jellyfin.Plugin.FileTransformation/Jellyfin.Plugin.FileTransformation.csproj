@@ -7,7 +7,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <RepositoryUrl>https://github.com/REPLACE_WITH_YOUR_GITHUB_USER/jellyfin-plugin-file-transformation</RepositoryUrl>
+        <RepositoryUrl>https://github.com/LapoRighini/jellyfin-plugin-file-transformation</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>
         <Description>Jellyfin plugin to allow other plugin developers to intercept and change the delivered web content of jellyfin-web without requiring custom jellyfin-web builds or injected javascript.
 

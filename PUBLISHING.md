@@ -1,8 +1,7 @@
 # Publishing this fork
 
-1. Create a GitHub fork named `jellyfin-plugin-file-transformation` and push this project to its `main` branch.
-2. Replace `REPLACE_WITH_YOUR_GITHUB_USER` in the project file and `manifest.json` with the GitHub account or organisation name.
-3. Push a tag such as `v3.0.0.0`.
+1. The fork is published at `LapoRighini/jellyfin-plugin-file-transformation`.
+2. Push a tag such as `v3.0.0.0`.
 4. The release workflow builds `FileTransformation.zip`, publishes the GitHub release, calculates the required MD5 checksum, and prepends the release to `manifest.json`.
 5. Add the resulting URL to Jellyfin: `https://raw.githubusercontent.com/<owner>/jellyfin-plugin-file-transformation/main/manifest.json`.
 

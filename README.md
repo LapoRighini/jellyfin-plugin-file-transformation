@@ -34,7 +34,7 @@ Well, this plugin is non destructive and allows multiple plugins to manipulate t
 
 ## Installation
 
-1. Add `https://raw.githubusercontent.com/<owner>/jellyfin-plugin-file-transformation/main/manifest.json` as a plugin source repository on your Jellyfin server.
+1. Add `https://raw.githubusercontent.com/LapoRighini/jellyfin-plugin-file-transformation/main/manifest.json` as a plugin source repository on your Jellyfin server.
 2. Find "File Transformation" in the list and install it. No configuration is required.
 
 This maintained fork targets **Jellyfin 12.0.0 RC4** only. See [PUBLISHING.md](PUBLISHING.md) for the release procedure and compatibility notes for dependent plugins.
