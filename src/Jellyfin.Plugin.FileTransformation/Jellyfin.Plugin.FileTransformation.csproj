@@ -13,7 +13,7 @@
 
 This plugin is based on a Pull Request (https://github.com/jellyfin/jellyfin/pull/9095) by https://github.com/JPVenson. Most of the code here was written by him, though adapted to function in a plugin context rather than a native change.</Description>
         
-        <Version>3.0.0.1</Version>
+        <Version>3.0.0.2</Version>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,8 +1,6 @@
 using System.Net.Mime;
 using System.Reflection;
-using Jellyfin.Plugin.FileTransformation.Attributes;
 using Jellyfin.Plugin.FileTransformation.Extensions;
-using Jellyfin.Plugin.FileTransformation.JellyfinVersionSpecific;
 using MediaBrowser.Common.Net;
 using MediaBrowser.Controller;
 using MediaBrowser.Controller.Configuration;
@@ -120,7 +118,7 @@ namespace Jellyfin.Plugin.FileTransformation.Helpers
                         FileProvider = WebStaticFilesFileProvider?.Invoke(serverConfigurationManager, mainApp) ?? new PhysicalFileProvider(serverConfigurationManager.ApplicationPaths.WebPath),
                         RequestPath = "/web",
                         ContentTypeProvider = extensionProvider
-                    }.ConfigureVersionSpecific());
+                    });
 
                     mainApp.UseRobotsRedirection();
                 }
