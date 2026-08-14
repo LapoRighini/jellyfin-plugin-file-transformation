@@ -21,9 +21,18 @@ namespace Jellyfin.Plugin.FileTransformation
         // already ran. By creating the instances eagerly here we eliminate the race.
         private static WebFileTransformationService? s_transformationService;
         private static FileTransformationLogger? s_transformationLogger;
+        private static IServerApplicationHost? s_applicationHost;
+
+        internal static IWebFileTransformationWriteService? WriteService => s_transformationService;
+
+        internal static IFileTransformationLogger? TransformationLogger => s_transformationLogger;
+
+        internal static IServerApplicationHost? ApplicationHost => s_applicationHost;
 
         public void RegisterServices(IServiceCollection serviceCollection, IServerApplicationHost applicationHost)
         {
+            s_applicationHost = applicationHost;
+
             IServerApplicationPaths? applicationPaths = (IServerApplicationPaths?)applicationHost.GetType().GetProperty("ApplicationPaths", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(applicationHost);
             ILoggerFactory? loggerFactory = (ILoggerFactory?)applicationHost.GetType().GetProperty("LoggerFactory", BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(applicationHost);
             ILogger? logger = loggerFactory?.CreateLogger(typeof(PluginServiceRegistrator).FullName ?? typeof(PluginServiceRegistrator).Name);

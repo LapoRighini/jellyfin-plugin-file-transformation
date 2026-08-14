@@ -16,17 +16,19 @@ namespace Jellyfin.Plugin.FileTransformation
 
         public override string Name => "File Transformation";
         
-        public IServiceProvider ServiceProvider { get; }
+        private readonly IWebFileTransformationWriteService m_writeService;
         
         public FileTransformationPlugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IServiceProvider serviceProvider, IWebFileTransformationWriteService writeService) : base(applicationPaths, xmlSerializer)
         {
             Instance = this;
             
-            ServiceProvider = serviceProvider;
+            // Jellyfin 12 no longer supplies a usable IServiceProvider to plugin
+            // constructors. Prefer the long-lived service created during registration.
+            m_writeService = PluginServiceRegistrator.WriteService ?? writeService;
 
             foreach (PluginDefinedTransformation transformation in Configuration.Transformations)
             {
-                writeService.AddTransformation(transformation.Id, transformation.FilenamePattern, (path, contents) => HandlePluginConfigTransformation(path, contents, transformation));
+                m_writeService.AddTransformation(transformation.Id, transformation.FilenamePattern, (path, contents) => HandlePluginConfigTransformation(path, contents, transformation));
             }
         }
 
@@ -43,7 +45,7 @@ namespace Jellyfin.Plugin.FileTransformation
                 {
                     if (!newConfig.Transformations.Any(x => x.Id == previousTransform.Id))
                     {
-                        ServiceProvider.GetRequiredService<IWebFileTransformationWriteService>().RemoveTransformation(previousTransform.Id);
+                        m_writeService.RemoveTransformation(previousTransform.Id);
                     }
                 }
 
@@ -51,11 +53,11 @@ namespace Jellyfin.Plugin.FileTransformation
                 {
                     if (previousTransforms.Any(x => x.Id == newTransform.Id))
                     {
-                        ServiceProvider.GetRequiredService<IWebFileTransformationWriteService>().UpdateTransformation(newTransform.Id, newTransform.FilenamePattern, (path, contents) => HandlePluginConfigTransformation(path, contents, newTransform));
+                        m_writeService.UpdateTransformation(newTransform.Id, newTransform.FilenamePattern, (path, contents) => HandlePluginConfigTransformation(path, contents, newTransform));
                     }
                     else
                     {
-                        ServiceProvider.GetRequiredService<IWebFileTransformationWriteService>().AddTransformation(newTransform.Id, newTransform.FilenamePattern, (path, contents) => HandlePluginConfigTransformation(path, contents, newTransform));
+                        m_writeService.AddTransformation(newTransform.Id, newTransform.FilenamePattern, (path, contents) => HandlePluginConfigTransformation(path, contents, newTransform));
                     }
                 }
             }
